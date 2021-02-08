@@ -6,6 +6,7 @@ import {
   Link,
 } from "react-router-dom";
 import { TodoList } from '@clean/todo-list';
+import { MessagesList } from '@clean/chat';
 
 export default function App() {
   return (
@@ -18,11 +19,17 @@ export default function App() {
           <li>
             <Link to="/todo">TODO</Link>
           </li>
+          <li>
+            <Link to="/chat">Chat</Link>
+          </li>
         </ul>
 
         <Switch>
           <Route path="/todo">
             <TodoList />
+          </Route>
+          <Route path="/chat">
+            <MessagesList />
           </Route>
           <Route path="/">
             <Home />

@@ -28,7 +28,7 @@ export class TodoListPresenter implements ITodoListPresenter {
   }
 
   get todos(): ITodo[] {
-    return this.repository.data ?? [];
+    return this.repository.data ?? []; //TODO add field date: number
   }
 
   async create(todo: ITodoCreate): Promise<void> {

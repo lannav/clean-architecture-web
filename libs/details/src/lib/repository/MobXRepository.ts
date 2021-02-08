@@ -8,7 +8,7 @@ export class MobXRepository<T> implements IRepository<T> {
 
   data: T | null = null;
 
-  save(data: T): void {
+  save(data: T | null): void {
     this.data = data;
   }
 }

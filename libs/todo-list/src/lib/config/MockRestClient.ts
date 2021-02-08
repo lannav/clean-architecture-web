@@ -1,5 +1,6 @@
-import { IRestClient } from '@clean/details';
 import { v4 } from 'uuid';
+import moment from 'moment';
+import { IRestClient } from '@clean/details';
 import { ITodo } from '../application/_models/ITodo';
 
 export class MockRestClient implements IRestClient {
@@ -36,6 +37,7 @@ export class MockRestClient implements IRestClient {
       ...body,
       id: v4(),
       checked: false,
+      date: Date.now(),
     } as unknown as ITodo;
     this.todos = [...this.todos, item];
 

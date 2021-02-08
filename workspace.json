@@ -158,6 +158,31 @@
           }
         }
       }
+    },
+    "chat": {
+      "root": "libs/chat",
+      "sourceRoot": "libs/chat/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/chat/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/chat"
+          ],
+          "options": {
+            "jestConfig": "libs/chat/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {
