@@ -9,6 +9,7 @@ import { ReadTodoUseCase } from '../application/read/ReadTodoUseCase';
 import { UpdateTodoUseCase } from '../application/update/UpdateTodoUseCase';
 import { DeleteTodoUseCase } from '../application/delete/DeleteTodoUseCase';
 import { Connector } from '@clean/details';
+import { CurrenciesFactory } from '@clean/currencies';
 
 export class Factory {
   private static _useCases: ITodoListUseCases;
@@ -26,6 +27,8 @@ export class Factory {
   private getUseCases(): ITodoListUseCases {
     const mockRestClient = new MockRestClient();
     const requester = new Requester(mockRestClient);
+
+    const { readCurrencies, createCurrencies } = CurrenciesFactory.useCases;
 
     //repositories
     const createLoadingRepository = new MobXRepository<boolean>();
@@ -63,6 +66,8 @@ export class Factory {
       createLoadingRepository,
       listLoadingRepository,
       itemsLoadingRepository,
+      readCurrencies,
+      createCurrencies,
     );
     //^^^presenters
 

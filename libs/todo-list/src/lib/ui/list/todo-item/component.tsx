@@ -9,6 +9,7 @@ export const TodoItem: React.FC<IPropsTodoItem> = ({
   title,
   description,
   checked,
+  currencySign,
   todoListPresenter,
 }) => {
   const onDeleteCallback = React.useCallback(() => todoListPresenter.delete(id), [todoListPresenter, id]);
@@ -31,6 +32,7 @@ export const TodoItem: React.FC<IPropsTodoItem> = ({
       style={{ width: 300 }}
     >
       <p>{ description }</p>
+      <p>{ currencySign }</p>
     </Card>
   );
 };

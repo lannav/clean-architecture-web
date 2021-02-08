@@ -18,7 +18,8 @@
     "paths": {
       "@clean/todo-list": ["libs/todo-list/src/index.ts"],
       "@clean/details": ["libs/details/src/index.ts"],
-      "@clean/chat": ["libs/chat/src/index.ts"]
+      "@clean/chat": ["libs/chat/src/index.ts"],
+      "@clean/currencies": ["libs/currencies/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -4,5 +4,6 @@ module.exports = {
     '<rootDir>/libs/todo-list',
     '<rootDir>/libs/details',
     '<rootDir>/libs/chat',
+    '<rootDir>/libs/currencies',
   ],
 };

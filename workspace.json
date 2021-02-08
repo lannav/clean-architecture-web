@@ -183,6 +183,31 @@
           }
         }
       }
+    },
+    "currencies": {
+      "root": "libs/currencies",
+      "sourceRoot": "libs/currencies/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/currencies/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/currencies"
+          ],
+          "options": {
+            "jestConfig": "libs/currencies/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

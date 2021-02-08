@@ -28,5 +28,11 @@ export const TodoForm: React.FC<IPropsTodoForm> = ({ todoListPresenter }) => (
         Create
       </Button>
     </Form.Item>
+
+    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+      <Button onClick={todoListPresenter.createCurrency}>
+        Create Currency
+      </Button>
+    </Form.Item>
   </Form>
 );

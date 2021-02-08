@@ -1,6 +1,6 @@
-import { ITodo } from '../../../application/_models/ITodo';
 import { ITodoListPresenter } from '../../../presenter/todo-list/ITodoListPresenter';
+import { ITodoPreview } from '../../../presenter/todo-list/ITodoPreview';
 
-export interface IPropsTodoItem extends ITodo {
+export interface IPropsTodoItem extends ITodoPreview {
   todoListPresenter: ITodoListPresenter;
 }

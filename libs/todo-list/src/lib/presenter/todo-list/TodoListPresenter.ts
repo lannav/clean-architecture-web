@@ -6,6 +6,8 @@ import { ICreateTodoUseCase } from '../../application/create/ICreateTodoUseCase'
 import { IDeleteTodoUseCase } from '../../application/delete/IDeleteTodoUseCase';
 import { IUpdateTodoUseCase } from '../../application/update/IUpdateTodoUseCase';
 import { IReadTodoUseCase } from '../../application/read/IReadTodoUseCase';
+import { ICreateCurrency, ICurrency, IReadCurrency } from '@clean/currencies';
+import { ITodoPreview } from './ITodoPreview';
 
 export class TodoListPresenter implements ITodoListPresenter {
   constructor(
@@ -17,6 +19,8 @@ export class TodoListPresenter implements ITodoListPresenter {
     private createLoadingRepository: IRepository<boolean>,
     private listLoadingRepository: IRepository<boolean>,
     private itemsLoadingRepository: IRepository<Record<string, boolean>>,
+    private readCurrency: IReadCurrency,
+    private createCurrencyUseCase: ICreateCurrency,
   ) { this.loadList() }
 
   async loadList(): Promise<void> {
@@ -27,8 +31,13 @@ export class TodoListPresenter implements ITodoListPresenter {
     this.listLoadingRepository.save(false);
   }
 
-  get todos(): ITodo[] {
-    return this.repository.data ?? []; //TODO add field date: number
+  get todos(): ITodoPreview[] {
+    const data = this.repository.data ?? [];
+
+    return data.map(it => ({
+      ...it,
+      currencySign: this.readCurrency.currency?.sign ?? '',
+    }));
   }
 
   async create(todo: ITodoCreate): Promise<void> {
@@ -37,6 +46,14 @@ export class TodoListPresenter implements ITodoListPresenter {
     await this.createUseCase.create(todo);
 
     this.createLoadingRepository.save(false);
+  }
+
+  createCurrency(): void {
+    this.createCurrencyUseCase.create({
+      code: Math.random(),
+      name: `${Math.random()}`,
+      sign: `${Math.random()}`,
+    });
   }
 
   async delete(id: string): Promise<void> {
