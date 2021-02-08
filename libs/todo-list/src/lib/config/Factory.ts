@@ -1,4 +1,3 @@
-import autoBind from 'auto-bind';
 import { ITodoListUseCases } from './ITodoListUseCases';
 import { TodoListPresenter } from '../presenter/todo-list/TodoListPresenter';
 import { MobXRepository } from '@clean/details';
@@ -29,31 +28,26 @@ export class Factory {
     const requester = new Requester(mockRestClient);
 
     //repositories
-    const isLoadingRepositoryCreate = new MobXRepository<boolean>();
-    const isLoadingRepositoryRead = new MobXRepository<boolean>();
-    const isLoadingRepositoryUpdate = new MobXRepository<Record<string, boolean>>();
-    const isLoadingRepositoryDelete = new MobXRepository<Record<string, boolean>>();
+    const createLoadingRepository = new MobXRepository<boolean>();
+    const listLoadingRepository = new MobXRepository<boolean>();
+    const itemsLoadingRepository = new MobXRepository<Record<string, boolean>>();
     const todosRepository = new MobXRepository<ITodo[]>();
     //^^^repositories
 
     //use cases
     const createUseCase = new CreateTodoUseCase(
-      isLoadingRepositoryCreate,
       todosRepository,
       requester,
     );
     const readUseCase = new ReadTodoUseCase(
-      isLoadingRepositoryRead,
       todosRepository,
       requester,
     );
     const updateUseCase = new UpdateTodoUseCase(
-      isLoadingRepositoryUpdate,
       todosRepository,
       requester,
     );
     const deleteUseCase = new DeleteTodoUseCase(
-      isLoadingRepositoryDelete,
       todosRepository,
       requester,
     );
@@ -66,6 +60,9 @@ export class Factory {
       deleteUseCase,
       updateUseCase,
       readUseCase,
+      createLoadingRepository,
+      listLoadingRepository,
+      itemsLoadingRepository,
     );
     //^^^presenters
 

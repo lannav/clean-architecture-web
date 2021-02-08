@@ -14,40 +14,83 @@ export class TodoListPresenter implements ITodoListPresenter {
     private deleteUseCase: IDeleteTodoUseCase,
     private updateUseCase: IUpdateTodoUseCase,
     private readUseCase: IReadTodoUseCase,
-  ) {}
+    private createLoadingRepository: IRepository<boolean>,
+    private listLoadingRepository: IRepository<boolean>,
+    private itemsLoadingRepository: IRepository<Record<string, boolean>>,
+  ) { this.loadList() }
+
+  async loadList(): Promise<void> {
+    this.listLoadingRepository.save(true);
+
+    await this.readUseCase.read();
+
+    this.listLoadingRepository.save(false);
+  }
 
   get todos(): ITodo[] {
     return this.repository.data ?? [];
   }
 
-  create(todo: ITodoCreate): void {
-    this.createUseCase.create(todo);
+  async create(todo: ITodoCreate): Promise<void> {
+    this.createLoadingRepository.save(true);
+
+    await this.createUseCase.create(todo);
+
+    this.createLoadingRepository.save(false);
   }
 
-  delete(id: string): void {
-    this.deleteUseCase.delete(id);
+  async delete(id: string): Promise<void> {
+    const itemLoading = {
+      ...this.itemsLoadingRepository.data,
+      [id]: true,
+    };
+
+    this.itemsLoadingRepository.save(itemLoading);
+
+    await this.deleteUseCase.delete(id);
+
+    const itemLoaded = {
+      ...this.itemsLoadingRepository.data,
+      [id]: false,
+    };
+
+    this.itemsLoadingRepository.save(itemLoaded);
   }
 
-  onCheck(id: string): void {
+  async onCheck(id: string): Promise<void> {
     const currentItem = this.repository.data?.find(it => it.id === id);
 
     if (currentItem) {
-      this.updateUseCase.update({
+      const itemLoading = {
+        ...this.itemsLoadingRepository.data,
+        [id]: true,
+      };
+
+      this.itemsLoadingRepository.save(itemLoading);
+
+      await this.updateUseCase.update({
         ...currentItem,
         checked: !currentItem.checked,
       });
+
+      const itemLoaded = {
+        ...this.itemsLoadingRepository.data,
+        [id]: false,
+      };
+
+      this.itemsLoadingRepository.save(itemLoaded);
     }
   }
 
   get isCreateLoading(): boolean {
-    return this.createUseCase.isLoading;
+    return this.createLoadingRepository.data ?? false;
   }
 
   get isListLoading(): boolean {
-    return this.readUseCase.isLoading;
+    return this.listLoadingRepository.data ?? false;
   }
 
   isItemLoading(id: string): boolean {
-    return this.updateUseCase.getIsLoading(id) || this.deleteUseCase.getIsLoading(id);
+    return this.itemsLoadingRepository.data?.[id] ?? false;
   }
 }
